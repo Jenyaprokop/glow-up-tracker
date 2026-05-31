@@ -215,113 +215,88 @@
     font-family: 'DM Sans', sans-serif;
   }
 
-  /* STREAK BAR */
-  .streak-bar {
+  /* PROGRESS BAR */
+  .progress-bar-block {
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 12px 16px;
+  }
+
+  .progress-top {
     display: flex;
     align-items: center;
-    gap: 14px;
+    justify-content: space-between;
+    margin-bottom: 8px;
   }
 
-  .streak-count {
-    font-family: 'DM Mono', monospace;
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--blue);
-    line-height: 1;
-    min-width: 36px;
-  }
-
-  .streak-info { flex: 1; }
-
-  .streak-label {
+  .progress-label {
     font-size: 12px;
     font-weight: 600;
     color: var(--text);
-    margin-bottom: 2px;
   }
 
-  .streak-msg {
+  .progress-msg {
     font-size: 11px;
     color: var(--text2);
-    line-height: 1.3;
   }
 
-  .progress-wrap {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 10px;
+  .progress-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--blue);
   }
 
   .progress-bar-bg {
-    flex: 1;
-    height: 4px;
+    width: 100%;
+    height: 5px;
     background: var(--border);
-    border-radius: 2px;
+    border-radius: 3px;
     overflow: hidden;
   }
 
   .progress-bar-fill {
     height: 100%;
     background: var(--blue);
-    border-radius: 2px;
+    border-radius: 3px;
     transition: width 0.5s ease;
   }
 
-  .progress-pct {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text2);
-    min-width: 32px;
-    text-align: right;
-  }
-
-  /* TABS */
-  .tabs {
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
     display: flex;
-    gap: 4px;
-    padding: 12px 20px 0;
-    overflow-x: auto;
-    scrollbar-width: none;
+    padding: 8px 0 20px;
+    z-index: 200;
   }
-  .tabs::-webkit-scrollbar { display: none; }
 
-  .tab {
-    font-size: 12px;
-    font-weight: 600;
-    padding: 7px 14px;
-    border-radius: 6px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    white-space: nowrap;
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
     background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
     color: var(--text3);
     font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
+    transition: color 0.15s;
   }
 
-  .tab.active {
-    background: var(--card);
-    border-color: var(--border2);
-    color: var(--text);
-  }
+  .nav-btn.active { color: var(--blue); }
+  .nav-icon { font-size: 20px; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
 
-  /* WEEK VIEW */
+  /* CALENDAR */
   .content { padding: 16px 20px 100px; }
-
-  .week-header {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 10px;
-    margin-top: 4px;
-  }
 
   .day-card {
     background: var(--card);
@@ -362,24 +337,14 @@
     color: var(--text);
   }
 
-  .day-type {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 1px;
-  }
-
+  .day-type { font-size: 11px; color: var(--text3); margin-top: 1px; }
   .day-type.workout { color: var(--blue); }
   .day-type.abs { color: #a78bfa; }
 
-  .day-dots {
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
+  .day-dots { display: flex; gap: 4px; align-items: center; }
 
   .dot {
-    width: 7px;
-    height: 7px;
+    width: 7px; height: 7px;
     border-radius: 50%;
     background: var(--border2);
     transition: background 0.2s;
@@ -418,8 +383,7 @@
   .task-row:last-child { border-bottom: none; }
 
   .task-check {
-    width: 22px;
-    height: 22px;
+    width: 22px; height: 22px;
     border-radius: 6px;
     border: 2px solid var(--border2);
     background: transparent;
@@ -430,20 +394,9 @@
     transition: all 0.15s;
   }
 
-  .task-row.done .task-check {
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .task-row.done-blue .task-check {
-    background: var(--blue);
-    border-color: var(--blue);
-  }
-
-  .task-row.done-purple .task-check {
-    background: #a78bfa;
-    border-color: #a78bfa;
-  }
+  .task-row.done .task-check { background: var(--green); border-color: var(--green); }
+  .task-row.done-blue .task-check { background: var(--blue); border-color: var(--blue); }
+  .task-row.done-purple .task-check { background: #a78bfa; border-color: #a78bfa; }
 
   .check-icon {
     opacity: 0;
@@ -468,29 +421,48 @@
 
   .task-row.done .task-name,
   .task-row.done-blue .task-name,
-  .task-row.done-purple .task-name {
-    color: var(--text2);
+  .task-row.done-purple .task-name { color: var(--text2); }
+
+  .task-desc { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .task-icon { font-size: 16px; flex-shrink: 0; width: 24px; text-align: center; }
+
+  .today-badge {
+    font-size: 10px; font-weight: 700;
+    background: var(--blue); color: white;
+    padding: 2px 6px; border-radius: 4px;
+    margin-left: 6px; vertical-align: middle;
   }
 
-  .task-desc {
-    font-size: 11px;
-    color: var(--text3);
-    margin-top: 1px;
+  .today-scroll-btn {
+    display: block; width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--blue);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 600;
+    padding: 10px; text-align: center;
+    cursor: pointer; margin-bottom: 16px;
   }
 
-  .task-icon {
-    font-size: 16px;
-    flex-shrink: 0;
-    width: 24px;
+  /* OVERVIEW */
+  .motivational-banner {
+    background: linear-gradient(135deg, var(--blue-dim), var(--card2));
+    border: 1px solid var(--blue-dim);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
     text-align: center;
   }
 
-  /* OVERVIEW TAB */
-  .overview-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 16px;
+  .motivational-banner .emoji { font-size: 24px; margin-bottom: 6px; }
+  .motivational-banner .msg { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .motivational-banner .submsg { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .section-divider {
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--text3); margin: 20px 0 10px;
   }
 
   .stat-card {
@@ -500,29 +472,7 @@
     padding: 16px;
   }
 
-  .stat-val {
-    font-family: 'DM Mono', monospace;
-    font-size: 28px;
-    font-weight: 500;
-    color: var(--blue);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .stat-label {
-    font-size: 12px;
-    color: var(--text2);
-  }
-
-  .heatmap-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin-bottom: 10px;
-  }
-
+  /* HEATMAP */
   .heatmap {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -530,10 +480,8 @@
   }
 
   .hm-day-label {
-    font-size: 10px;
-    color: var(--text3);
-    text-align: center;
-    font-weight: 600;
+    font-size: 10px; color: var(--text3);
+    text-align: center; font-weight: 600;
     padding-bottom: 4px;
   }
 
@@ -542,7 +490,6 @@
     border-radius: 5px;
     background: var(--border);
     transition: background 0.2s;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -558,96 +505,7 @@
   .hm-cell.p100 { background: var(--green); color: white; }
   .hm-cell.today-hm { outline: 2px solid var(--blue); outline-offset: 1px; }
 
-  /* BOTTOM NAV */
-  .bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--bg2);
-    border-top: 1px solid var(--border);
-    display: flex;
-    padding: 8px 0 20px;
-    z-index: 200;
-  }
-
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 6px 0;
-    color: var(--text3);
-    font-family: 'DM Sans', sans-serif;
-    transition: color 0.15s;
-  }
-
-  .nav-btn.active { color: var(--blue); }
-
-  .nav-icon { font-size: 20px; }
-  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
-
-  /* HIDDEN */
   .hidden { display: none !important; }
-
-  /* TODAY HIGHLIGHT */
-  .today-badge {
-    font-size: 10px;
-    font-weight: 700;
-    background: var(--blue);
-    color: white;
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-left: 6px;
-    vertical-align: middle;
-  }
-
-  .motivational-banner {
-    background: linear-gradient(135deg, var(--blue-dim), var(--card2));
-    border: 1px solid var(--blue-dim);
-    border-radius: var(--radius);
-    padding: 16px;
-    margin-bottom: 16px;
-    text-align: center;
-  }
-
-  .motivational-banner .emoji { font-size: 24px; margin-bottom: 6px; }
-  .motivational-banner .msg { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
-  .motivational-banner .submsg { font-size: 12px; color: var(--text2); margin-top: 4px; }
-
-  .section-divider {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text3);
-    margin: 20px 0 10px;
-  }
-
-  .past-label {
-    opacity: 0.4;
-  }
-
-  /* Scroll to today btn */
-  .today-scroll-btn {
-    display: block;
-    width: 100%;
-    background: var(--card);
-    border: 1px solid var(--border2);
-    border-radius: var(--radius-sm);
-    color: var(--blue);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    margin-bottom: 16px;
-  }
 </style>
 </head>
 <body>
@@ -655,7 +513,7 @@
 <!-- SETUP SCREEN -->
 <div id="setup-screen">
   <div class="setup-logo">Glow Up Tracker</div>
-  <div class="setup-title">Your June 2026<br>Challenge Starts Here</div>
+  <div class="setup-title">Your 30-Day<br>Challenge Starts Now</div>
   <div class="setup-sub">30 days. One habit at a time.<br>Let's build something real.</div>
 
   <div class="setup-card">
@@ -664,17 +522,17 @@
 
     <label class="setup-label">Your Workout Days <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0">(pick 3)</span></label>
     <div class="days-grid" id="days-grid">
-      <button class="day-btn" data-day="1">Mon</button>
-      <button class="day-btn" data-day="2">Tue</button>
-      <button class="day-btn" data-day="3">Wed</button>
-      <button class="day-btn" data-day="4">Thu</button>
-      <button class="day-btn" data-day="5">Fri</button>
-      <button class="day-btn" data-day="6">Sat</button>
-      <button class="day-btn" data-day="0">Sun</button>
+      <button class="day-btn" data-day="0">Mon</button>
+      <button class="day-btn" data-day="1">Tue</button>
+      <button class="day-btn" data-day="2">Wed</button>
+      <button class="day-btn" data-day="3">Thu</button>
+      <button class="day-btn" data-day="4">Fri</button>
+      <button class="day-btn" data-day="5">Sat</button>
+      <button class="day-btn" data-day="6">Sun</button>
     </div>
     <div class="days-hint">Abs training will be auto-assigned on 2 non-workout days each week.</div>
 
-    <button class="setup-btn" id="start-btn">Start My June Challenge →</button>
+    <button class="setup-btn" id="start-btn">Start My 30-Day Challenge →</button>
   </div>
 </div>
 
@@ -682,23 +540,22 @@
 <div id="app-screen">
   <div class="app-header">
     <div class="header-top">
-      <div class="header-brand">Glow Up Tracker · June 2026</div>
+      <div class="header-brand">Glow Up Tracker · 30 Days</div>
       <div style="display:flex;align-items:center;gap:8px;">
         <span class="header-name" id="header-name"></span>
         <button class="reset-btn" id="reset-btn">Reset</button>
       </div>
     </div>
-    <div class="streak-bar">
-      <div class="streak-count" id="streak-count">0</div>
-      <div class="streak-info">
-        <div class="streak-label" id="streak-label">Day Streak</div>
-        <div class="streak-msg" id="streak-msg">Check off today's habits to start your streak</div>
-        <div class="progress-wrap">
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-          </div>
-          <div class="progress-pct" id="progress-pct">0%</div>
+    <div class="progress-bar-block">
+      <div class="progress-top">
+        <div>
+          <div class="progress-label">Your Progress</div>
+          <div class="progress-msg" id="progress-msg">Check off today's habits to begin</div>
         </div>
+        <div class="progress-pct" id="progress-pct">0%</div>
+      </div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
       </div>
     </div>
   </div>
@@ -728,62 +585,44 @@
 </div>
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────
-const STORAGE_KEY = 'glowup_june2026';
-const JUNE_DAYS = 30;
+const STORAGE_KEY = 'glowup_30day_v2';
+const TOTAL_DAYS = 30;
+
+// Days per week repeat pattern: 0=Mon,1=Tue,2=Wed,3=Thu,4=Fri,5=Sat,6=Sun
+const DAY_NAMES_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+const DAY_NAMES_FULL  = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
 const MOTIVATIONAL = [
-  { emoji: '🔥', msg: 'You\'re on fire.', sub: 'Keep the momentum going — don\'t break the chain.' },
+  { emoji: '👊', msg: 'Let\'s get started.', sub: 'Your first perfect day is waiting.' },
+  { emoji: '🔥', msg: 'You\'re on fire.', sub: 'Keep the momentum — don\'t break the chain.' },
   { emoji: '💪', msg: 'Consistency is your superpower.', sub: 'Most people quit. You didn\'t.' },
-  { emoji: '⚡', msg: 'Every check is a vote for the person you\'re becoming.', sub: 'Small actions, real results.' },
+  { emoji: '⚡', msg: 'Every check is a vote for who you\'re becoming.', sub: 'Small actions, real results.' },
   { emoji: '🏆', msg: 'You\'re doing what you said you would.', sub: 'That\'s rarer than you think.' },
-  { emoji: '🚀', msg: 'The body is built in the everyday moments.', sub: 'Not just the gym — right here.' },
+  { emoji: '🚀', msg: 'The body is built in everyday moments.', sub: 'Not just in the gym — right here.' },
   { emoji: '🎯', msg: 'Locked in.', sub: 'This is what discipline looks like in real life.' },
+  { emoji: '💎', msg: 'You earned this.', sub: 'Now protect it.' },
   { emoji: '🌊', msg: 'Progress compounds.', sub: 'Every day you show up adds to the total.' },
-  { emoji: '💎', msg: 'You earned this streak.', sub: 'Now protect it.' },
 ];
 
-const STREAK_MESSAGES = {
-  0: 'Start today — every streak begins with one day.',
-  1: 'Day 1 done. The hardest streak to start is now started.',
-  2: 'Back-to-back. You\'re building something.',
-  3: '3 days straight. This is becoming a habit.',
-  5: '5-day streak! You\'re in the top tier already.',
-  7: '1 full week! 🎉 You actually did it.',
-  10: '10 days in. This is who you are now.',
-  14: '2 weeks straight. Incredible.',
-  21: '21 days — they say habits form here. You proved it.',
-  30: '30/30. Perfect June. You are elite. 🏆',
-};
+const STREAK_MESSAGES = [
+  [0,  'Check off today\'s habits to start your streak.'],
+  [1,  'Day 1 done. The hardest streak to start is now started.'],
+  [2,  'Back-to-back. You\'re building something.'],
+  [3,  '3 days straight. This is becoming a habit.'],
+  [5,  '5-day streak! You\'re in the top tier already.'],
+  [7,  '1 full week! You actually did it. 🎉'],
+  [10, '10 days in. This is who you are now.'],
+  [14, '2 weeks straight. Incredible.'],
+  [21, '21 days. Habits form here. You proved it.'],
+  [30, '30/30. Perfect challenge. You are elite. 🏆'],
+];
 
 function getStreakMessage(streak) {
-  const keys = Object.keys(STREAK_MESSAGES).map(Number).sort((a,b) => b-a);
-  for (const k of keys) {
-    if (streak >= k) return STREAK_MESSAGES[k];
+  let msg = STREAK_MESSAGES[0][1];
+  for (const [k, m] of STREAK_MESSAGES) {
+    if (streak >= k) msg = m;
   }
-  return STREAK_MESSAGES[0];
-}
-
-// June 2026: starts Monday (day-of-week 1)
-// Day 1 = June 1 2026 = Monday
-function getDayOfWeek(dayNum) {
-  // June 1 2026 = Monday = 1
-  return ((dayNum - 1) % 7 + 1) % 7; // 0=Sun,1=Mon,...6=Sat
-  // Actually: June 1 = Monday. dayNum 1→Mon(1), 2→Tue(2)...7→Sun(0), 8→Mon(1)...
-}
-
-function getJuneDayOfWeek(dayNum) {
-  // June 1 2026 is a Monday
-  // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
-  const startDow = 1; // Monday
-  return (startDow + dayNum - 1) % 7;
-}
-
-const DOW_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const DOW_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-
-function getWeekNumber(dayNum) {
-  return Math.ceil(dayNum / 7);
+  return msg;
 }
 
 // ─── STATE ───────────────────────────────────────────────────────────
@@ -800,51 +639,46 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+// workoutDays: array of 0-6 (0=Mon…6=Sun), repeating per week
 function initState(name, workoutDays) {
-  // workoutDays: array of DOW numbers [1,3,5] = Mon,Wed,Fri
-  // Determine abs days: 2 non-workout days per week
   const days = {};
-  for (let d = 1; d <= JUNE_DAYS; d++) {
-    const dow = getJuneDayOfWeek(d);
+  for (let d = 1; d <= TOTAL_DAYS; d++) {
+    // Day 1 = first day of challenge (treated as Monday internally)
+    const dow = (d - 1) % 7; // 0=Mon,1=Tue,...6=Sun
     const isWorkout = workoutDays.includes(dow);
     days[d] = {
       mobility: false,
       steps: false,
       water: false,
       nutrition: false,
-      workout: isWorkout ? false : null, // null = not a workout day
-      abs: null, // will be set below
+      workout: isWorkout ? false : null,
+      abs: null,
     };
   }
 
-  // Assign abs days: 2x per week on non-workout days
-  for (let week = 1; week <= 5; week++) {
-    const start = (week - 1) * 7 + 1;
-    const end = Math.min(start + 6, JUNE_DAYS);
-    const nonWorkoutDays = [];
+  // Assign abs: 2x per 7-day cycle, on non-workout days
+  for (let cycle = 0; cycle < Math.ceil(TOTAL_DAYS / 7); cycle++) {
+    const start = cycle * 7 + 1;
+    const end   = Math.min(start + 6, TOTAL_DAYS);
+    const nonWorkout = [];
     for (let d = start; d <= end; d++) {
-      const dow = getJuneDayOfWeek(d);
-      if (!workoutDays.includes(dow)) nonWorkoutDays.push(d);
+      const dow = (d - 1) % 7;
+      if (!workoutDays.includes(dow)) nonWorkout.push(d);
     }
-    // Pick first 2 non-workout days for abs
-    nonWorkoutDays.slice(0, 2).forEach(d => {
-      days[d].abs = false;
-    });
+    nonWorkout.slice(0, 2).forEach(d => { days[d].abs = false; });
   }
 
-  state = { name, workoutDays, days, createdAt: Date.now() };
+  state = { name, workoutDays, days, startedAt: Date.now(), currentDay: 1 };
   saveState();
 }
 
-// ─── CURRENT DATE ────────────────────────────────────────────────────
+// "Today" = the current challenge day (1–30).
+// We derive it from how many days have passed since startedAt.
 function getTodayDayNum() {
-  const now = new Date();
-  if (now.getFullYear() === 2026 && now.getMonth() === 5) {
-    return now.getDate(); // 1-30
-  }
-  // For demo/testing outside June 2026, show day 1
-  // Uncomment below line for demo: return 1;
-  return null; // not June 2026
+  if (!state) return 1;
+  const msPerDay = 86400000;
+  const elapsed = Math.floor((Date.now() - state.startedAt) / msPerDay);
+  return Math.min(Math.max(elapsed + 1, 1), TOTAL_DAYS);
 }
 
 // ─── SETUP ───────────────────────────────────────────────────────────
@@ -874,7 +708,7 @@ document.getElementById('start-btn').addEventListener('click', () => {
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
-  if (confirm('Reset all progress and start over?')) {
+  if (confirm('Reset all progress and start the 30-day challenge over?')) {
     localStorage.removeItem(STORAGE_KEY);
     state = null;
     document.getElementById('app-screen').style.display = 'none';
@@ -903,21 +737,17 @@ function showApp() {
   setTimeout(scrollToToday, 100);
 }
 
-// ─── RENDER CALENDAR ─────────────────────────────────────────────────
+// ─── CALENDAR ────────────────────────────────────────────────────────
 function getDayTasks(dayNum) {
   const d = state.days[dayNum];
   const tasks = [
-    { key: 'mobility', icon: '🤸', name: 'Mobility Exercises', desc: '5–10 min movement flow', color: 'green' },
-    { key: 'steps', icon: '👟', name: '10,000 Steps', desc: 'Daily movement goal', color: 'green' },
-    { key: 'water', icon: '💧', name: 'Water Balance', desc: '2–3 litres throughout the day', color: 'green' },
-    { key: 'nutrition', icon: '🥗', name: 'Daily Nutrition', desc: 'Hit your protein & calorie target', color: 'green' },
+    { key: 'mobility',  icon: '🤸', name: 'Mobility Exercises', desc: '5–10 min movement flow',              color: 'green'  },
+    { key: 'steps',     icon: '👟', name: '10,000 Steps',        desc: 'Daily movement goal',                 color: 'green'  },
+    { key: 'water',     icon: '💧', name: 'Water Balance',       desc: '2–3 litres throughout the day',       color: 'green'  },
+    { key: 'nutrition', icon: '🥗', name: 'Daily Nutrition',     desc: 'Hit your protein & calorie target',   color: 'green'  },
   ];
-  if (d.workout !== null) {
-    tasks.push({ key: 'workout', icon: '💪', name: 'Full Workout Session', desc: 'Your scheduled training day', color: 'blue' });
-  }
-  if (d.abs !== null) {
-    tasks.push({ key: 'abs', icon: '🔥', name: 'Abs Training', desc: '15–20 min core workout', color: 'purple' });
-  }
+  if (d.workout !== null) tasks.push({ key: 'workout', icon: '💪', name: 'Full Workout Session', desc: 'Your scheduled training day', color: 'blue'   });
+  if (d.abs     !== null) tasks.push({ key: 'abs',     icon: '🔥', name: 'Abs Training',         desc: '15–20 min core workout',     color: 'purple' });
   return tasks;
 }
 
@@ -928,60 +758,50 @@ function getDayCompletionRatio(dayNum) {
 }
 
 function getDayDots(dayNum) {
-  return getDayTasks(dayNum).map(t => ({
-    checked: state.days[dayNum][t.key] === true,
-    color: t.color
-  }));
+  return getDayTasks(dayNum).map(t => ({ checked: state.days[dayNum][t.key] === true, color: t.color }));
 }
 
 function getDayTypeLabel(dayNum) {
   const d = state.days[dayNum];
   if (d.workout !== null) return { text: '💪 Workout Day', cls: 'workout' };
-  if (d.abs !== null) return { text: '🔥 Abs Day', cls: 'abs' };
+  if (d.abs     !== null) return { text: '🔥 Abs Day',     cls: 'abs'     };
   return { text: 'Recovery & Habits', cls: '' };
 }
 
 function renderCalendar() {
   const todayNum = getTodayDayNum();
-  const content = document.getElementById('calendar-content');
+  const content  = document.getElementById('calendar-content');
   let html = '';
 
-  const weeks = Math.ceil(JUNE_DAYS / 7);
-  for (let w = 1; w <= weeks; w++) {
-    const start = (w - 1) * 7 + 1;
-    const end = Math.min(start + 6, JUNE_DAYS);
-    html += `<div class="week-header">Week ${w} · June ${start}–${end}</div>`;
+  for (let d = 1; d <= TOTAL_DAYS; d++) {
+    const dow       = (d - 1) % 7;
+    const isToday   = d === todayNum;
+    const isPast    = d < todayNum;
+    const { checked, total } = getDayCompletionRatio(d);
+    const isComplete = checked === total;
+    const typeLabel  = getDayTypeLabel(d);
+    const dots       = getDayDots(d);
 
-    for (let d = start; d <= end; d++) {
-      const dow = getJuneDayOfWeek(d);
-      const isToday = d === todayNum;
-      const isPast = todayNum && d < todayNum;
-      const { checked, total } = getDayCompletionRatio(d);
-      const isComplete = checked === total;
-      const typeLabel = getDayTypeLabel(d);
-      const dots = getDayDots(d);
+    let cardClass = 'day-card';
+    if (isToday) cardClass += ' today';
+    if (isComplete && (isToday || isPast)) cardClass += ' complete';
 
-      let cardClass = 'day-card';
-      if (isToday) cardClass += ' today';
-      if (isComplete && (isToday || isPast)) cardClass += ' complete';
-
-      html += `<div class="${cardClass}" id="day-${d}">
-        <div class="day-card-header" onclick="toggleDay(${d})">
-          <div class="day-num">${String(d).padStart(2,'0')}</div>
-          <div class="day-name-wrap">
-            <div class="day-name">${DOW_FULL[dow]}, June ${d}${isToday ? '<span class="today-badge">TODAY</span>' : ''}</div>
-            <div class="day-type ${typeLabel.cls}">${typeLabel.text}</div>
-          </div>
-          <div class="day-dots">
-            ${dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('')}
-          </div>
-          <div class="day-chevron">▼</div>
+    html += `<div class="${cardClass}" id="day-${d}">
+      <div class="day-card-header" onclick="toggleDay(${d})">
+        <div class="day-num">${String(d).padStart(2,'0')}</div>
+        <div class="day-name-wrap">
+          <div class="day-name">${DAY_NAMES_FULL[dow]}${isToday ? '<span class="today-badge">TODAY</span>' : ''}</div>
+          <div class="day-type ${typeLabel.cls}">${typeLabel.text}</div>
         </div>
-        <div class="day-tasks" id="tasks-${d}">
-          ${renderTasks(d)}
+        <div class="day-dots">
+          ${dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('')}
         </div>
-      </div>`;
-    }
+        <div class="day-chevron">▼</div>
+      </div>
+      <div class="day-tasks" id="tasks-${d}">
+        ${renderTasks(d)}
+      </div>
+    </div>`;
   }
 
   content.innerHTML = html;
@@ -990,12 +810,12 @@ function renderCalendar() {
 function renderTasks(dayNum) {
   const tasks = getDayTasks(dayNum);
   const d = state.days[dayNum];
-  let html = '';
-  tasks.forEach(task => {
-    const val = d[task.key];
-    const isDone = val === true;
-    const doneClass = isDone ? (task.color === 'blue' ? 'done-blue' : task.color === 'purple' ? 'done-purple' : 'done') : '';
-    html += `<div class="task-row ${doneClass}" onclick="toggleTask(${dayNum}, '${task.key}')">
+  return tasks.map(task => {
+    const isDone = d[task.key] === true;
+    const doneClass = isDone
+      ? (task.color === 'blue' ? 'done-blue' : task.color === 'purple' ? 'done-purple' : 'done')
+      : '';
+    return `<div class="task-row ${doneClass}" onclick="toggleTask(${dayNum}, '${task.key}')">
       <div class="task-icon">${task.icon}</div>
       <div class="task-label">
         <div class="task-name">${task.name}</div>
@@ -1003,77 +823,59 @@ function renderTasks(dayNum) {
       </div>
       <div class="task-check"><span class="check-icon">✓</span></div>
     </div>`;
-  });
-  return html;
+  }).join('');
 }
 
 function toggleDay(dayNum) {
-  const card = document.getElementById(`day-${dayNum}`);
-  card.classList.toggle('open');
+  document.getElementById(`day-${dayNum}`).classList.toggle('open');
 }
 
 function toggleTask(dayNum, key) {
-  const current = state.days[dayNum][key];
-  state.days[dayNum][key] = !current;
+  state.days[dayNum][key] = !state.days[dayNum][key];
   saveState();
 
-  // Re-render tasks and dots
   document.getElementById(`tasks-${dayNum}`).innerHTML = renderTasks(dayNum);
 
-  // Update dots in header
-  const card = document.getElementById(`day-${dayNum}`);
-  const dots = getDayDots(dayNum);
-  const dotsEl = card.querySelector('.day-dots');
-  dotsEl.innerHTML = dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('');
+  const card  = document.getElementById(`day-${dayNum}`);
+  const dots  = getDayDots(dayNum);
+  card.querySelector('.day-dots').innerHTML =
+    dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('');
 
-  // Update complete class
   const { checked, total } = getDayCompletionRatio(dayNum);
   const todayNum = getTodayDayNum();
-  const isPast = todayNum && dayNum < todayNum;
-  if (checked === total && (dayNum === todayNum || isPast)) {
-    card.classList.add('complete');
-  } else {
-    card.classList.remove('complete');
-  }
+  const isPast   = dayNum < todayNum;
+  if (checked === total && (dayNum === todayNum || isPast)) card.classList.add('complete');
+  else card.classList.remove('complete');
 
   updateHeader();
 }
 
 function scrollToToday() {
   const todayNum = getTodayDayNum();
-  if (!todayNum) return;
   const el = document.getElementById(`day-${todayNum}`);
   if (el) {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    // Auto-open today
     if (!el.classList.contains('open')) el.classList.add('open');
   }
 }
 
-// ─── STREAK & HEADER ─────────────────────────────────────────────────
+// ─── HEADER ──────────────────────────────────────────────────────────
 function calculateStreak() {
   const todayNum = getTodayDayNum();
-  if (!todayNum) return 0;
-
   let streak = 0;
   for (let d = todayNum; d >= 1; d--) {
     const { checked, total } = getDayCompletionRatio(d);
-    if (checked === total && total > 0) {
-      streak++;
-    } else if (d === todayNum) {
-      // today not complete yet — streak is from yesterday
-      break;
-    } else {
-      break;
-    }
+    if (checked === total && total > 0) streak++;
+    else if (d === todayNum) break;
+    else break;
   }
   return streak;
 }
 
 function calculateCompletedDays() {
-  const todayNum = getTodayDayNum() || JUNE_DAYS;
+  const todayNum = getTodayDayNum();
   let count = 0;
-  for (let d = 1; d <= Math.min(todayNum, JUNE_DAYS); d++) {
+  for (let d = 1; d <= todayNum; d++) {
     const { checked, total } = getDayCompletionRatio(d);
     if (checked === total && total > 0) count++;
   }
@@ -1081,82 +883,59 @@ function calculateCompletedDays() {
 }
 
 function updateHeader() {
-  const streak = calculateStreak();
-  const todayNum = getTodayDayNum() || 1;
+  const streak    = calculateStreak();
   const completed = calculateCompletedDays();
-  const pct = Math.round((completed / JUNE_DAYS) * 100);
+  const pct       = Math.round((completed / TOTAL_DAYS) * 100);
 
-  document.getElementById('streak-count').textContent = streak;
-  document.getElementById('streak-label').textContent = streak === 1 ? 'Day Streak' : 'Day Streak';
-  document.getElementById('streak-msg').textContent = getStreakMessage(streak);
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-pct').textContent  = pct + '%';
+  document.getElementById('progress-msg').textContent  = getStreakMessage(streak);
 }
 
 // ─── OVERVIEW ────────────────────────────────────────────────────────
 function renderOverview() {
-  const todayNum = getTodayDayNum() || JUNE_DAYS;
+  const todayNum  = getTodayDayNum();
+  const streak    = calculateStreak();
   const completed = calculateCompletedDays();
-  const streak = calculateStreak();
-  const pct = Math.round((completed / JUNE_DAYS) * 100);
 
-  // Pick motivational message
-  const mot = MOTIVATIONAL[Math.min(Math.floor(streak / 3), MOTIVATIONAL.length - 1)];
-  const actualMot = streak > 0 ? mot : { emoji: '👊', msg: 'Let\'s get started.', sub: 'Your first perfect day is waiting.' };
+  const motIdx    = Math.min(Math.floor(streak / 3), MOTIVATIONAL.length - 1);
+  const mot       = streak > 0 ? MOTIVATIONAL[motIdx] : MOTIVATIONAL[0];
 
-  // Habit stats
-  let mobilityCount = 0, stepsCount = 0, waterCount = 0, nutritionCount = 0, workoutCount = 0, absCount = 0;
-  let workoutTotal = 0, absTotal = 0;
-  const pastDays = Math.min(todayNum, JUNE_DAYS);
+  // Habit counts
+  let mobilityCount=0, stepsCount=0, waterCount=0, nutritionCount=0, workoutCount=0, absCount=0;
+  let workoutTotal=0,  absTotal=0;
 
-  for (let d = 1; d <= pastDays; d++) {
+  for (let d = 1; d <= todayNum; d++) {
     const day = state.days[d];
-    if (day.mobility === true) mobilityCount++;
-    if (day.steps === true) stepsCount++;
-    if (day.water === true) waterCount++;
+    if (day.mobility  === true) mobilityCount++;
+    if (day.steps     === true) stepsCount++;
+    if (day.water     === true) waterCount++;
     if (day.nutrition === true) nutritionCount++;
     if (day.workout !== null) { workoutTotal++; if (day.workout === true) workoutCount++; }
-    if (day.abs !== null) { absTotal++; if (day.abs === true) absCount++; }
+    if (day.abs     !== null) { absTotal++;     if (day.abs     === true) absCount++;     }
   }
 
-  let html = `
+  const html = `
     <div class="motivational-banner">
-      <div class="emoji">${actualMot.emoji}</div>
-      <div class="msg">${actualMot.msg}</div>
-      <div class="submsg">${actualMot.sub}</div>
+      <div class="emoji">${mot.emoji}</div>
+      <div class="msg">${mot.msg}</div>
+      <div class="submsg">${mot.sub}</div>
     </div>
 
-    <div class="overview-grid">
-      <div class="stat-card">
-        <div class="stat-val">${completed}</div>
-        <div class="stat-label">Perfect days</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val">${streak}</div>
-        <div class="stat-label">Current streak</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val">${pct}%</div>
-        <div class="stat-label">June complete</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-val">${JUNE_DAYS - todayNum + 1 > 0 ? JUNE_DAYS - todayNum + 1 : 0}</div>
-        <div class="stat-label">Days remaining</div>
-      </div>
+    <div class="section-divider">30-Day Heatmap</div>
+    <div class="stat-card" style="margin-bottom:16px;padding:16px">
+      ${renderHeatmap(todayNum)}
     </div>
 
     <div class="section-divider">Habit Breakdown</div>
     <div class="stat-card" style="margin-bottom:10px">
-      ${renderHabitRow('🤸', 'Mobility', mobilityCount, pastDays)}
-      ${renderHabitRow('👟', 'Steps', stepsCount, pastDays)}
-      ${renderHabitRow('💧', 'Water', waterCount, pastDays)}
-      ${renderHabitRow('🥗', 'Nutrition', nutritionCount, pastDays)}
-      ${workoutTotal > 0 ? renderHabitRow('💪', 'Workouts', workoutCount, workoutTotal) : ''}
-      ${absTotal > 0 ? renderHabitRow('🔥', 'Abs Sessions', absCount, absTotal) : ''}
+      ${renderHabitRow('🤸', 'Mobility',     mobilityCount,  todayNum)}
+      ${renderHabitRow('👟', 'Steps',        stepsCount,     todayNum)}
+      ${renderHabitRow('💧', 'Water',        waterCount,     todayNum)}
+      ${renderHabitRow('🥗', 'Nutrition',    nutritionCount, todayNum)}
+      ${workoutTotal > 0 ? renderHabitRow('💪', 'Workouts',     workoutCount, workoutTotal) : ''}
+      ${absTotal     > 0 ? renderHabitRow('🔥', 'Abs Sessions', absCount,     absTotal)     : ''}
     </div>
-
-    <div class="section-divider">June Heatmap</div>
-    ${renderHeatmap(todayNum)}
   `;
 
   document.getElementById('overview-content').innerHTML = html;
@@ -1175,48 +954,35 @@ function renderHabitRow(icon, name, count, total) {
 }
 
 function renderHeatmap(todayNum) {
-  const dayLabels = ['S','M','T','W','T','F','S'];
-  // June 1 = Monday, so first cell starts at index 1 (Mon)
-  const startOffset = 1; // Mon
-
-  let html = `<div class="heatmap">`;
-  // Day labels row
-  dayLabels.forEach(l => html += `<div class="hm-day-label">${l}</div>`);
-
-  // Empty cells before June 1
-  for (let i = 0; i < startOffset; i++) {
-    html += `<div class="hm-cell future"></div>`;
-  }
-
-  for (let d = 1; d <= JUNE_DAYS; d++) {
-    const isToday = d === todayNum;
+  // 30 cells in 5 rows of 6 — cleaner than calendar grid for a rolling tracker
+  let html = `<div style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">`;
+  for (let d = 1; d <= TOTAL_DAYS; d++) {
+    const isToday  = d === todayNum;
     const isFuture = d > todayNum;
-    let cellClass = 'hm-cell';
-    if (isToday) cellClass += ' today-hm';
-
+    let cls = 'hm-cell';
+    if (isToday)  cls += ' today-hm';
     if (isFuture) {
-      cellClass += ' future';
-      html += `<div class="${cellClass}"></div>`;
+      cls += ' future';
+      html += `<div class="${cls}" style="font-size:9px;color:var(--text3);font-weight:600">${d}</div>`;
     } else {
       const { checked, total } = getDayCompletionRatio(d);
       const ratio = total > 0 ? checked / total : 0;
-      if (ratio === 0) { /* default grey */ }
-      else if (ratio <= 0.25) cellClass += ' p25';
-      else if (ratio <= 0.5) cellClass += ' p50';
-      else if (ratio < 1) cellClass += ' p75';
-      else cellClass += ' p100';
-      html += `<div class="${cellClass}" title="June ${d}">${d}</div>`;
+      if      (ratio === 0)  { /* grey default */ }
+      else if (ratio <= 0.25) cls += ' p25';
+      else if (ratio <= 0.5)  cls += ' p50';
+      else if (ratio < 1)     cls += ' p75';
+      else                    cls += ' p100';
+      html += `<div class="${cls}" style="color:white;font-size:9px;font-weight:600">${d}</div>`;
     }
   }
-
-  // Fill remaining cells
-  const totalCells = startOffset + JUNE_DAYS;
-  const remainder = (7 - (totalCells % 7)) % 7;
-  for (let i = 0; i < remainder; i++) {
-    html += `<div class="hm-cell future"></div>`;
-  }
-
-  html += `</div>`;
+  html += `</div>
+  <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:3px;background:var(--border)"></div><span style="font-size:10px;color:var(--text3)">0%</span></div>
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:3px;background:#1d3a6e"></div><span style="font-size:10px;color:var(--text3)">25%</span></div>
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:3px;background:#1e4d8c"></div><span style="font-size:10px;color:var(--text3)">50%</span></div>
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:3px;background:#1d4ed8"></div><span style="font-size:10px;color:var(--text3)">75%</span></div>
+    <div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:3px;background:var(--green)"></div><span style="font-size:10px;color:var(--text3)">100%</span></div>
+  </div>`;
   return html;
 }
 
