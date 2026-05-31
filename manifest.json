@@ -2,7 +2,7 @@
   "name": "Glow Up Tracker",
   "short_name": "Glow Up",
   "description": "Your 30-day June 2026 habit tracker",
-  "start_url": "/",
+  "start_url": "/glow-up-tracker/index.html",
   "display": "standalone",
   "background_color": "#0a0e1a",
   "theme_color": "#0a0e1a",
