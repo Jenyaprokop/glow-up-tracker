@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Glow Up">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0e1a">
+<title>Glow Up Tracker</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0a0e1a;
+    --bg2: #0f1525;
+    --bg3: #141c30;
+    --card: #161e33;
+    --card2: #1a2340;
+    --border: #1e2d4a;
+    --border2: #243560;
+    --blue: #3b82f6;
+    --blue2: #2563eb;
+    --blue-dim: #1d3a6e;
+    --blue-glow: rgba(59,130,246,0.15);
+    --text: #e8edf8;
+    --text2: #8896b3;
+    --text3: #4f627a;
+    --green: #22c55e;
+    --green-dim: #14532d;
+    --white: #ffffff;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* SETUP SCREEN */
+  #setup-screen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--bg);
+  }
+
+  .setup-logo {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 12px;
+  }
+
+  .setup-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .setup-sub {
+    font-size: 15px;
+    color: var(--text2);
+    text-align: center;
+    margin-bottom: 40px;
+    line-height: 1.5;
+  }
+
+  .setup-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .setup-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .setup-input {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 24px;
+  }
+
+  .setup-input:focus { border-color: var(--blue); }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 24px;
+  }
+
+  .day-btn {
+    aspect-ratio: 1;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border2);
+    background: var(--bg2);
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .day-btn.selected {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
+  }
+
+  .days-hint {
+    font-size: 12px;
+    color: var(--text3);
+    margin-bottom: 24px;
+    margin-top: -18px;
+    line-height: 1.4;
+  }
+
+  .setup-btn {
+    width: 100%;
+    background: var(--blue);
+    color: var(--white);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .setup-btn:hover { background: var(--blue2); }
+
+  /* MAIN APP */
+  #app-screen { display: none; min-height: 100vh; }
+
+  .app-header {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .header-brand {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--blue);
+  }
+
+  .header-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .reset-btn {
+    font-size: 11px;
+    color: var(--text3);
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* STREAK BAR */
+  .streak-bar {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .streak-count {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--blue);
+    line-height: 1;
+    min-width: 36px;
+  }
+
+  .streak-info { flex: 1; }
+
+  .streak-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .streak-msg {
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.3;
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--blue);
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-pct {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text2);
+    min-width: 32px;
+    text-align: right;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px 20px 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    background: none;
+    color: var(--text3);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .tab.active {
+    background: var(--card);
+    border-color: var(--border2);
+    color: var(--text);
+  }
+
+  /* WEEK VIEW */
+  .content { padding: 16px 20px 100px; }
+
+  .week-header {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+
+  .day-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .day-card.today { border-color: var(--blue); }
+  .day-card.complete { border-color: var(--green); }
+
+  .day-card-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .day-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text3);
+    min-width: 32px;
+  }
+
+  .day-card.today .day-num { color: var(--blue); }
+  .day-card.complete .day-num { color: var(--green); }
+
+  .day-name-wrap { flex: 1; margin-left: 10px; }
+
+  .day-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .day-type {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .day-type.workout { color: var(--blue); }
+  .day-type.abs { color: #a78bfa; }
+
+  .day-dots {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+  }
+
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border2);
+    transition: background 0.2s;
+  }
+
+  .dot.checked { background: var(--green); }
+  .dot.blue.checked { background: var(--blue); }
+  .dot.purple.checked { background: #a78bfa; }
+
+  .day-chevron {
+    margin-left: 10px;
+    color: var(--text3);
+    font-size: 12px;
+    transition: transform 0.2s;
+  }
+
+  .day-card.open .day-chevron { transform: rotate(180deg); }
+
+  .day-tasks {
+    display: none;
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-card.open .day-tasks { display: block; }
+
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+
+  .task-row:last-child { border-bottom: none; }
+
+  .task-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border2);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .task-row.done .task-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .task-row.done-blue .task-check {
+    background: var(--blue);
+    border-color: var(--blue);
+  }
+
+  .task-row.done-purple .task-check {
+    background: #a78bfa;
+    border-color: #a78bfa;
+  }
+
+  .check-icon {
+    opacity: 0;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    transition: opacity 0.15s;
+  }
+
+  .task-row.done .check-icon,
+  .task-row.done-blue .check-icon,
+  .task-row.done-purple .check-icon { opacity: 1; }
+
+  .task-label { flex: 1; }
+
+  .task-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    transition: color 0.15s;
+  }
+
+  .task-row.done .task-name,
+  .task-row.done-blue .task-name,
+  .task-row.done-purple .task-name {
+    color: var(--text2);
+  }
+
+  .task-desc {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .task-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    width: 24px;
+    text-align: center;
+  }
+
+  /* OVERVIEW TAB */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+
+  .stat-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .heatmap-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .heatmap {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+
+  .hm-day-label {
+    font-size: 10px;
+    color: var(--text3);
+    text-align: center;
+    font-weight: 600;
+    padding-bottom: 4px;
+  }
+
+  .hm-cell {
+    aspect-ratio: 1;
+    border-radius: 5px;
+    background: var(--border);
+    transition: background 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 600;
+    color: transparent;
+  }
+
+  .hm-cell.future { background: var(--bg2); }
+  .hm-cell.p25 { background: #1d3a6e; color: #3b82f6; }
+  .hm-cell.p50 { background: #1e4d8c; color: #60a5fa; }
+  .hm-cell.p75 { background: #1d4ed8; color: #bfdbfe; }
+  .hm-cell.p100 { background: var(--green); color: white; }
+  .hm-cell.today-hm { outline: 2px solid var(--blue); outline-offset: 1px; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 8px 0 20px;
+    z-index: 200;
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    color: var(--text3);
+    font-family: 'DM Sans', sans-serif;
+    transition: color 0.15s;
+  }
+
+  .nav-btn.active { color: var(--blue); }
+
+  .nav-icon { font-size: 20px; }
+  .nav-label { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; }
+
+  /* HIDDEN */
+  .hidden { display: none !important; }
+
+  /* TODAY HIGHLIGHT */
+  .today-badge {
+    font-size: 10px;
+    font-weight: 700;
+    background: var(--blue);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .motivational-banner {
+    background: linear-gradient(135deg, var(--blue-dim), var(--card2));
+    border: 1px solid var(--blue-dim);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .motivational-banner .emoji { font-size: 24px; margin-bottom: 6px; }
+  .motivational-banner .msg { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .motivational-banner .submsg { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .section-divider {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin: 20px 0 10px;
+  }
+
+  .past-label {
+    opacity: 0.4;
+  }
+
+  /* Scroll to today btn */
+  .today-scroll-btn {
+    display: block;
+    width: 100%;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--blue);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<!-- SETUP SCREEN -->
+<div id="setup-screen">
+  <div class="setup-logo">Glow Up Tracker</div>
+  <div class="setup-title">Your June 2026<br>Challenge Starts Here</div>
+  <div class="setup-sub">30 days. One habit at a time.<br>Let's build something real.</div>
+
+  <div class="setup-card">
+    <label class="setup-label">Your First Name</label>
+    <input type="text" class="setup-input" id="name-input" placeholder="Enter your name..." maxlength="20">
+
+    <label class="setup-label">Your Workout Days <span style="color:var(--text3);font-weight:400;text-transform:none;letter-spacing:0">(pick 3)</span></label>
+    <div class="days-grid" id="days-grid">
+      <button class="day-btn" data-day="1">Mon</button>
+      <button class="day-btn" data-day="2">Tue</button>
+      <button class="day-btn" data-day="3">Wed</button>
+      <button class="day-btn" data-day="4">Thu</button>
+      <button class="day-btn" data-day="5">Fri</button>
+      <button class="day-btn" data-day="6">Sat</button>
+      <button class="day-btn" data-day="0">Sun</button>
+    </div>
+    <div class="days-hint">Abs training will be auto-assigned on 2 non-workout days each week.</div>
+
+    <button class="setup-btn" id="start-btn">Start My June Challenge →</button>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app-screen">
+  <div class="app-header">
+    <div class="header-top">
+      <div class="header-brand">Glow Up Tracker · June 2026</div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span class="header-name" id="header-name"></span>
+        <button class="reset-btn" id="reset-btn">Reset</button>
+      </div>
+    </div>
+    <div class="streak-bar">
+      <div class="streak-count" id="streak-count">0</div>
+      <div class="streak-info">
+        <div class="streak-label" id="streak-label">Day Streak</div>
+        <div class="streak-msg" id="streak-msg">Check off today's habits to start your streak</div>
+        <div class="progress-wrap">
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+          </div>
+          <div class="progress-pct" id="progress-pct">0%</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button class="nav-btn active" id="nav-calendar" onclick="showView('calendar')">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Calendar</span>
+    </button>
+    <button class="nav-btn" id="nav-overview" onclick="showView('overview')">
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Overview</span>
+    </button>
+  </div>
+
+  <!-- CALENDAR VIEW -->
+  <div id="view-calendar" class="content">
+    <button class="today-scroll-btn" onclick="scrollToToday()">↓ Jump to Today</button>
+    <div id="calendar-content"></div>
+  </div>
+
+  <!-- OVERVIEW VIEW -->
+  <div id="view-overview" class="content hidden">
+    <div id="overview-content"></div>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────
+const STORAGE_KEY = 'glowup_june2026';
+const JUNE_DAYS = 30;
+
+const MOTIVATIONAL = [
+  { emoji: '🔥', msg: 'You\'re on fire.', sub: 'Keep the momentum going — don\'t break the chain.' },
+  { emoji: '💪', msg: 'Consistency is your superpower.', sub: 'Most people quit. You didn\'t.' },
+  { emoji: '⚡', msg: 'Every check is a vote for the person you\'re becoming.', sub: 'Small actions, real results.' },
+  { emoji: '🏆', msg: 'You\'re doing what you said you would.', sub: 'That\'s rarer than you think.' },
+  { emoji: '🚀', msg: 'The body is built in the everyday moments.', sub: 'Not just the gym — right here.' },
+  { emoji: '🎯', msg: 'Locked in.', sub: 'This is what discipline looks like in real life.' },
+  { emoji: '🌊', msg: 'Progress compounds.', sub: 'Every day you show up adds to the total.' },
+  { emoji: '💎', msg: 'You earned this streak.', sub: 'Now protect it.' },
+];
+
+const STREAK_MESSAGES = {
+  0: 'Start today — every streak begins with one day.',
+  1: 'Day 1 done. The hardest streak to start is now started.',
+  2: 'Back-to-back. You\'re building something.',
+  3: '3 days straight. This is becoming a habit.',
+  5: '5-day streak! You\'re in the top tier already.',
+  7: '1 full week! 🎉 You actually did it.',
+  10: '10 days in. This is who you are now.',
+  14: '2 weeks straight. Incredible.',
+  21: '21 days — they say habits form here. You proved it.',
+  30: '30/30. Perfect June. You are elite. 🏆',
+};
+
+function getStreakMessage(streak) {
+  const keys = Object.keys(STREAK_MESSAGES).map(Number).sort((a,b) => b-a);
+  for (const k of keys) {
+    if (streak >= k) return STREAK_MESSAGES[k];
+  }
+  return STREAK_MESSAGES[0];
+}
+
+// June 2026: starts Monday (day-of-week 1)
+// Day 1 = June 1 2026 = Monday
+function getDayOfWeek(dayNum) {
+  // June 1 2026 = Monday = 1
+  return ((dayNum - 1) % 7 + 1) % 7; // 0=Sun,1=Mon,...6=Sat
+  // Actually: June 1 = Monday. dayNum 1→Mon(1), 2→Tue(2)...7→Sun(0), 8→Mon(1)...
+}
+
+function getJuneDayOfWeek(dayNum) {
+  // June 1 2026 is a Monday
+  // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  const startDow = 1; // Monday
+  return (startDow + dayNum - 1) % 7;
+}
+
+const DOW_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DOW_FULL = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
+function getWeekNumber(dayNum) {
+  return Math.ceil(dayNum / 7);
+}
+
+// ─── STATE ───────────────────────────────────────────────────────────
+let state = null;
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) state = JSON.parse(raw);
+  } catch(e) { state = null; }
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function initState(name, workoutDays) {
+  // workoutDays: array of DOW numbers [1,3,5] = Mon,Wed,Fri
+  // Determine abs days: 2 non-workout days per week
+  const days = {};
+  for (let d = 1; d <= JUNE_DAYS; d++) {
+    const dow = getJuneDayOfWeek(d);
+    const isWorkout = workoutDays.includes(dow);
+    days[d] = {
+      mobility: false,
+      steps: false,
+      water: false,
+      nutrition: false,
+      workout: isWorkout ? false : null, // null = not a workout day
+      abs: null, // will be set below
+    };
+  }
+
+  // Assign abs days: 2x per week on non-workout days
+  for (let week = 1; week <= 5; week++) {
+    const start = (week - 1) * 7 + 1;
+    const end = Math.min(start + 6, JUNE_DAYS);
+    const nonWorkoutDays = [];
+    for (let d = start; d <= end; d++) {
+      const dow = getJuneDayOfWeek(d);
+      if (!workoutDays.includes(dow)) nonWorkoutDays.push(d);
+    }
+    // Pick first 2 non-workout days for abs
+    nonWorkoutDays.slice(0, 2).forEach(d => {
+      days[d].abs = false;
+    });
+  }
+
+  state = { name, workoutDays, days, createdAt: Date.now() };
+  saveState();
+}
+
+// ─── CURRENT DATE ────────────────────────────────────────────────────
+function getTodayDayNum() {
+  const now = new Date();
+  if (now.getFullYear() === 2026 && now.getMonth() === 5) {
+    return now.getDate(); // 1-30
+  }
+  // For demo/testing outside June 2026, show day 1
+  // Uncomment below line for demo: return 1;
+  return null; // not June 2026
+}
+
+// ─── SETUP ───────────────────────────────────────────────────────────
+let selectedDays = [];
+
+document.querySelectorAll('.day-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const day = parseInt(btn.dataset.day);
+    if (selectedDays.includes(day)) {
+      selectedDays = selectedDays.filter(d => d !== day);
+      btn.classList.remove('selected');
+    } else {
+      if (selectedDays.length < 3) {
+        selectedDays.push(day);
+        btn.classList.add('selected');
+      }
+    }
+  });
+});
+
+document.getElementById('start-btn').addEventListener('click', () => {
+  const name = document.getElementById('name-input').value.trim();
+  if (!name) { alert('Please enter your name!'); return; }
+  if (selectedDays.length !== 3) { alert('Please select exactly 3 workout days!'); return; }
+  initState(name, selectedDays);
+  showApp();
+});
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (confirm('Reset all progress and start over?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    state = null;
+    document.getElementById('app-screen').style.display = 'none';
+    document.getElementById('setup-screen').style.display = 'flex';
+    selectedDays = [];
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+    document.getElementById('name-input').value = '';
+  }
+});
+
+// ─── VIEWS ───────────────────────────────────────────────────────────
+function showView(view) {
+  document.getElementById('view-calendar').classList.toggle('hidden', view !== 'calendar');
+  document.getElementById('view-overview').classList.toggle('hidden', view !== 'overview');
+  document.getElementById('nav-calendar').classList.toggle('active', view === 'calendar');
+  document.getElementById('nav-overview').classList.toggle('active', view === 'overview');
+  if (view === 'overview') renderOverview();
+}
+
+function showApp() {
+  document.getElementById('setup-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'block';
+  document.getElementById('header-name').textContent = state.name;
+  renderCalendar();
+  updateHeader();
+  setTimeout(scrollToToday, 100);
+}
+
+// ─── RENDER CALENDAR ─────────────────────────────────────────────────
+function getDayTasks(dayNum) {
+  const d = state.days[dayNum];
+  const tasks = [
+    { key: 'mobility', icon: '🤸', name: 'Mobility Exercises', desc: '5–10 min movement flow', color: 'green' },
+    { key: 'steps', icon: '👟', name: '10,000 Steps', desc: 'Daily movement goal', color: 'green' },
+    { key: 'water', icon: '💧', name: 'Water Balance', desc: '2–3 litres throughout the day', color: 'green' },
+    { key: 'nutrition', icon: '🥗', name: 'Daily Nutrition', desc: 'Hit your protein & calorie target', color: 'green' },
+  ];
+  if (d.workout !== null) {
+    tasks.push({ key: 'workout', icon: '💪', name: 'Full Workout Session', desc: 'Your scheduled training day', color: 'blue' });
+  }
+  if (d.abs !== null) {
+    tasks.push({ key: 'abs', icon: '🔥', name: 'Abs Training', desc: '15–20 min core workout', color: 'purple' });
+  }
+  return tasks;
+}
+
+function getDayCompletionRatio(dayNum) {
+  const tasks = getDayTasks(dayNum);
+  const checked = tasks.filter(t => state.days[dayNum][t.key] === true).length;
+  return { checked, total: tasks.length };
+}
+
+function getDayDots(dayNum) {
+  return getDayTasks(dayNum).map(t => ({
+    checked: state.days[dayNum][t.key] === true,
+    color: t.color
+  }));
+}
+
+function getDayTypeLabel(dayNum) {
+  const d = state.days[dayNum];
+  if (d.workout !== null) return { text: '💪 Workout Day', cls: 'workout' };
+  if (d.abs !== null) return { text: '🔥 Abs Day', cls: 'abs' };
+  return { text: 'Recovery & Habits', cls: '' };
+}
+
+function renderCalendar() {
+  const todayNum = getTodayDayNum();
+  const content = document.getElementById('calendar-content');
+  let html = '';
+
+  const weeks = Math.ceil(JUNE_DAYS / 7);
+  for (let w = 1; w <= weeks; w++) {
+    const start = (w - 1) * 7 + 1;
+    const end = Math.min(start + 6, JUNE_DAYS);
+    html += `<div class="week-header">Week ${w} · June ${start}–${end}</div>`;
+
+    for (let d = start; d <= end; d++) {
+      const dow = getJuneDayOfWeek(d);
+      const isToday = d === todayNum;
+      const isPast = todayNum && d < todayNum;
+      const { checked, total } = getDayCompletionRatio(d);
+      const isComplete = checked === total;
+      const typeLabel = getDayTypeLabel(d);
+      const dots = getDayDots(d);
+
+      let cardClass = 'day-card';
+      if (isToday) cardClass += ' today';
+      if (isComplete && (isToday || isPast)) cardClass += ' complete';
+
+      html += `<div class="${cardClass}" id="day-${d}">
+        <div class="day-card-header" onclick="toggleDay(${d})">
+          <div class="day-num">${String(d).padStart(2,'0')}</div>
+          <div class="day-name-wrap">
+            <div class="day-name">${DOW_FULL[dow]}, June ${d}${isToday ? '<span class="today-badge">TODAY</span>' : ''}</div>
+            <div class="day-type ${typeLabel.cls}">${typeLabel.text}</div>
+          </div>
+          <div class="day-dots">
+            ${dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('')}
+          </div>
+          <div class="day-chevron">▼</div>
+        </div>
+        <div class="day-tasks" id="tasks-${d}">
+          ${renderTasks(d)}
+        </div>
+      </div>`;
+    }
+  }
+
+  content.innerHTML = html;
+}
+
+function renderTasks(dayNum) {
+  const tasks = getDayTasks(dayNum);
+  const d = state.days[dayNum];
+  let html = '';
+  tasks.forEach(task => {
+    const val = d[task.key];
+    const isDone = val === true;
+    const doneClass = isDone ? (task.color === 'blue' ? 'done-blue' : task.color === 'purple' ? 'done-purple' : 'done') : '';
+    html += `<div class="task-row ${doneClass}" onclick="toggleTask(${dayNum}, '${task.key}')">
+      <div class="task-icon">${task.icon}</div>
+      <div class="task-label">
+        <div class="task-name">${task.name}</div>
+        <div class="task-desc">${task.desc}</div>
+      </div>
+      <div class="task-check"><span class="check-icon">✓</span></div>
+    </div>`;
+  });
+  return html;
+}
+
+function toggleDay(dayNum) {
+  const card = document.getElementById(`day-${dayNum}`);
+  card.classList.toggle('open');
+}
+
+function toggleTask(dayNum, key) {
+  const current = state.days[dayNum][key];
+  state.days[dayNum][key] = !current;
+  saveState();
+
+  // Re-render tasks and dots
+  document.getElementById(`tasks-${dayNum}`).innerHTML = renderTasks(dayNum);
+
+  // Update dots in header
+  const card = document.getElementById(`day-${dayNum}`);
+  const dots = getDayDots(dayNum);
+  const dotsEl = card.querySelector('.day-dots');
+  dotsEl.innerHTML = dots.map(dot => `<div class="dot ${dot.color} ${dot.checked ? 'checked' : ''}"></div>`).join('');
+
+  // Update complete class
+  const { checked, total } = getDayCompletionRatio(dayNum);
+  const todayNum = getTodayDayNum();
+  const isPast = todayNum && dayNum < todayNum;
+  if (checked === total && (dayNum === todayNum || isPast)) {
+    card.classList.add('complete');
+  } else {
+    card.classList.remove('complete');
+  }
+
+  updateHeader();
+}
+
+function scrollToToday() {
+  const todayNum = getTodayDayNum();
+  if (!todayNum) return;
+  const el = document.getElementById(`day-${todayNum}`);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    // Auto-open today
+    if (!el.classList.contains('open')) el.classList.add('open');
+  }
+}
+
+// ─── STREAK & HEADER ─────────────────────────────────────────────────
+function calculateStreak() {
+  const todayNum = getTodayDayNum();
+  if (!todayNum) return 0;
+
+  let streak = 0;
+  for (let d = todayNum; d >= 1; d--) {
+    const { checked, total } = getDayCompletionRatio(d);
+    if (checked === total && total > 0) {
+      streak++;
+    } else if (d === todayNum) {
+      // today not complete yet — streak is from yesterday
+      break;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function calculateCompletedDays() {
+  const todayNum = getTodayDayNum() || JUNE_DAYS;
+  let count = 0;
+  for (let d = 1; d <= Math.min(todayNum, JUNE_DAYS); d++) {
+    const { checked, total } = getDayCompletionRatio(d);
+    if (checked === total && total > 0) count++;
+  }
+  return count;
+}
+
+function updateHeader() {
+  const streak = calculateStreak();
+  const todayNum = getTodayDayNum() || 1;
+  const completed = calculateCompletedDays();
+  const pct = Math.round((completed / JUNE_DAYS) * 100);
+
+  document.getElementById('streak-count').textContent = streak;
+  document.getElementById('streak-label').textContent = streak === 1 ? 'Day Streak' : 'Day Streak';
+  document.getElementById('streak-msg').textContent = getStreakMessage(streak);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+// ─── OVERVIEW ────────────────────────────────────────────────────────
+function renderOverview() {
+  const todayNum = getTodayDayNum() || JUNE_DAYS;
+  const completed = calculateCompletedDays();
+  const streak = calculateStreak();
+  const pct = Math.round((completed / JUNE_DAYS) * 100);
+
+  // Pick motivational message
+  const mot = MOTIVATIONAL[Math.min(Math.floor(streak / 3), MOTIVATIONAL.length - 1)];
+  const actualMot = streak > 0 ? mot : { emoji: '👊', msg: 'Let\'s get started.', sub: 'Your first perfect day is waiting.' };
+
+  // Habit stats
+  let mobilityCount = 0, stepsCount = 0, waterCount = 0, nutritionCount = 0, workoutCount = 0, absCount = 0;
+  let workoutTotal = 0, absTotal = 0;
+  const pastDays = Math.min(todayNum, JUNE_DAYS);
+
+  for (let d = 1; d <= pastDays; d++) {
+    const day = state.days[d];
+    if (day.mobility === true) mobilityCount++;
+    if (day.steps === true) stepsCount++;
+    if (day.water === true) waterCount++;
+    if (day.nutrition === true) nutritionCount++;
+    if (day.workout !== null) { workoutTotal++; if (day.workout === true) workoutCount++; }
+    if (day.abs !== null) { absTotal++; if (day.abs === true) absCount++; }
+  }
+
+  let html = `
+    <div class="motivational-banner">
+      <div class="emoji">${actualMot.emoji}</div>
+      <div class="msg">${actualMot.msg}</div>
+      <div class="submsg">${actualMot.sub}</div>
+    </div>
+
+    <div class="overview-grid">
+      <div class="stat-card">
+        <div class="stat-val">${completed}</div>
+        <div class="stat-label">Perfect days</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">${streak}</div>
+        <div class="stat-label">Current streak</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">${pct}%</div>
+        <div class="stat-label">June complete</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">${JUNE_DAYS - todayNum + 1 > 0 ? JUNE_DAYS - todayNum + 1 : 0}</div>
+        <div class="stat-label">Days remaining</div>
+      </div>
+    </div>
+
+    <div class="section-divider">Habit Breakdown</div>
+    <div class="stat-card" style="margin-bottom:10px">
+      ${renderHabitRow('🤸', 'Mobility', mobilityCount, pastDays)}
+      ${renderHabitRow('👟', 'Steps', stepsCount, pastDays)}
+      ${renderHabitRow('💧', 'Water', waterCount, pastDays)}
+      ${renderHabitRow('🥗', 'Nutrition', nutritionCount, pastDays)}
+      ${workoutTotal > 0 ? renderHabitRow('💪', 'Workouts', workoutCount, workoutTotal) : ''}
+      ${absTotal > 0 ? renderHabitRow('🔥', 'Abs Sessions', absCount, absTotal) : ''}
+    </div>
+
+    <div class="section-divider">June Heatmap</div>
+    ${renderHeatmap(todayNum)}
+  `;
+
+  document.getElementById('overview-content').innerHTML = html;
+}
+
+function renderHabitRow(icon, name, count, total) {
+  const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+  return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+    <span style="font-size:16px;width:20px;text-align:center">${icon}</span>
+    <span style="flex:1;font-size:13px;font-weight:500;color:var(--text)">${name}</span>
+    <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2)">${count}/${total}</span>
+    <div style="width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+      <div style="width:${pct}%;height:100%;background:var(--blue);border-radius:2px"></div>
+    </div>
+  </div>`;
+}
+
+function renderHeatmap(todayNum) {
+  const dayLabels = ['S','M','T','W','T','F','S'];
+  // June 1 = Monday, so first cell starts at index 1 (Mon)
+  const startOffset = 1; // Mon
+
+  let html = `<div class="heatmap">`;
+  // Day labels row
+  dayLabels.forEach(l => html += `<div class="hm-day-label">${l}</div>`);
+
+  // Empty cells before June 1
+  for (let i = 0; i < startOffset; i++) {
+    html += `<div class="hm-cell future"></div>`;
+  }
+
+  for (let d = 1; d <= JUNE_DAYS; d++) {
+    const isToday = d === todayNum;
+    const isFuture = d > todayNum;
+    let cellClass = 'hm-cell';
+    if (isToday) cellClass += ' today-hm';
+
+    if (isFuture) {
+      cellClass += ' future';
+      html += `<div class="${cellClass}"></div>`;
+    } else {
+      const { checked, total } = getDayCompletionRatio(d);
+      const ratio = total > 0 ? checked / total : 0;
+      if (ratio === 0) { /* default grey */ }
+      else if (ratio <= 0.25) cellClass += ' p25';
+      else if (ratio <= 0.5) cellClass += ' p50';
+      else if (ratio < 1) cellClass += ' p75';
+      else cellClass += ' p100';
+      html += `<div class="${cellClass}" title="June ${d}">${d}</div>`;
+    }
+  }
+
+  // Fill remaining cells
+  const totalCells = startOffset + JUNE_DAYS;
+  const remainder = (7 - (totalCells % 7)) % 7;
+  for (let i = 0; i < remainder; i++) {
+    html += `<div class="hm-cell future"></div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────
+loadState();
+if (state) {
+  showApp();
+} else {
+  document.getElementById('setup-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+}
+</script>
+</body>
+</html>
